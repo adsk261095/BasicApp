@@ -1,0 +1,96 @@
+ <html>
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Edit Page</title>
+        <!-- <link rel="stylesheet" href="css/normalize.css">
+         --><link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+       <style type="text/css">
+              .loader
+      {   padding:0%;
+          margin:0%;
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          opacity:0.9;
+          background:url('loading3.gif') 50% 50% no-repeat rgb(0,0,0);
+          /*background-color:url('loading3.gif');*/
+      }
+      </style>
+      <div class="loader"></div>
+      
+      <form method="post">
+      
+        <h1>Edit Credentials</h1>
+        
+        <fieldset>
+          
+          <label >Name:</label>
+          <input type="text" id="name" name="name">
+          
+          <label >Mobile No.:</label>
+          <input type="tel" id="mobile" name="mobile">
+          
+          
+        </fieldset>
+        
+        
+        <button type="button" id="d1" onclick="done()">Done</button>
+      </form>
+      
+    </body>
+    <script>
+      $(document).ready(function(){
+            $(".loader").fadeOut("slow");
+            $('#d1').click(function(){
+                $(".loader").fadeIn("slow");
+                $('.loader').css('visibility','visible');
+            });
+        });
+      window.onload=function()
+        {
+          console.log(localStorage.getItem('name'));
+          document.getElementById('name').value=localStorage.getItem('name');
+          document.getElementById('mobile').value=localStorage.getItem('mobile');
+        }
+      function done()
+      {
+        console.log('click');
+       
+        var u_id=localStorage.getItem('u_id');
+        var name=document.getElementById('name').value;
+        var mobile=document.getElementById('mobile').value;
+        console.log(u_id);
+
+        $.ajax({
+                type:'post',
+                url:'edit.php',
+                data:{
+                u_id:u_id,
+                name:name,
+                mobile:mobile
+                },
+                success:function(data)
+                {
+                    //$('#r').html(data);
+                    console.log(data);
+                    localStorage.setItem('name',name);
+                    localStorage.setItem('mobile',mobile);
+                    if(data==1)
+                      window.location.href="main.html";
+                }
+                
+                });
+
+      }
+      
+      
+    </script>
+</html>

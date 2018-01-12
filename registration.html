@@ -1,0 +1,156 @@
+ <html>
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Registration Form</title>
+        <!-- <link rel="stylesheet" href="css/normalize.css">
+         --><link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+       <style type="text/css">
+              .loader
+      {   padding:0%;
+          margin:0%;
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          opacity:0.9;
+          background:url('loading3.gif') 50% 50% no-repeat rgb(0,0,0);
+          /*background-color:url('loading3.gif');*/
+      }
+      </style>
+      <div class="loader"></div>
+      <form method="post">
+      
+        <h1>Registration</h1>
+        
+        <fieldset>
+          
+          <label for="name">Name:</label>
+          <input type="text" id="name" name="user_name">
+          
+          <label for="name">Mobile No:</label>
+          <input type="text" id="mobile" name="user_mobile">
+          
+          <label>Gender:</label>
+          <input type="radio" id="Male" value="Male" name="user_gender"><label for="Male" class="light">Male</label><br>
+          
+          <input type="radio" id="Female" value="Female" name="user_gender"><label for="female" class="light">Female</label>
+          
+          
+          <label for="mail">Email:</label>
+          <input type="email" id="email" name="user_email">
+          
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="user_password">
+          
+          
+        </fieldset>
+        
+        
+        <button type="button" id="c1" onclick="c()">Register</button>
+      </form>
+      
+    </body>
+    <script>
+      $(document).ready(function() {
+            $(".loader").fadeOut("slow");
+
+            // $("#c1").click(function(){
+            //   $(".loader").fadeIn("slow");
+            //   $(".loader").css('visibility','visible');
+            // });
+          });
+      function c()
+      {
+        console.log('click');
+        var name=document.getElementById('name').value;
+        var mobile=document.getElementById('mobile').value;
+        var email=document.getElementById('email').value;
+        var password=document.getElementById('password').value;
+        if(document.getElementById('Male').checked)
+          var gender=document.getElementById('Male').value;
+        if(document.getElementById('Female').checked)
+          var gender=document.getElementById('Female').value;
+        console.log(name);
+        console.log(mobile);
+        console.log(email);
+        console.log(password);
+        console.log(gender);
+
+        
+        if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email))  
+        {  
+          console.log("You have entered an valid email address!");
+          if(/^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/.test(mobile))
+          {
+            console.log("You have entered an valid email address!");
+              if(/^[A-Za-z\s]+$/.test(name))
+              {
+                console.log("You have entered an valid name");
+                if(gender=="Male" || gender=="Female")
+                {
+                  console.log('valid gender');
+                  if(/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{4,8}$/.test(password))
+                  {
+                    console.log('Valid password');
+
+                           $.ajax({
+                          type:'post',
+                          url:'register.php',
+                          data:{
+                          name:name,
+                          mobile:mobile,
+                          email:email,
+                          password:password,
+                          gender:gender
+                          },
+                          success:function(data)
+                          {
+                              //$('#r').html(data);
+                              console.log(data);
+                             if(data==1)
+                               window.location.href="index.html";
+                          }
+                          // },
+                          // complete: function (data)
+                          //  {
+                          //     window.location.href="login.html";
+                          //  }
+                          });
+                  }
+                  else
+                  {
+                    alert("Please enter a password of length 6 to 20 characters which contain at least one numeric digit, one uppercase, and one lowercase letter")
+                  }
+                }
+                else
+                {
+                  alert('Please select your gender');
+                }
+              }
+              else
+              {
+                alert("You have entered an invalid name");  
+              }
+          }  
+          else
+          {
+            alert("You have entered an invalid mobile no.");  
+          }
+        }  
+        else
+        {
+          alert("You have entered an invalid email address! eg- abc@yahoo.com");  
+        } 
+        
+        }
+
+     
+    </script>
+</html>

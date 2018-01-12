@@ -1,0 +1,112 @@
+ <html>
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Login Page</title>
+        <!-- <link rel="stylesheet" href="css/normalize.css">
+         --><link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+       <style type="text/css">
+      .loader
+      {   padding:0%;
+          margin:0%;
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          opacity:0.9;
+          background:url('loading3.gif') 50% 50% no-repeat rgb(0,0,0);
+          /*background-color:url('loading3.gif');*/
+      }
+
+      h4
+      {
+        text-align: center;
+      }
+      </style>
+      <div class="loader"></div>
+      <form method="post">
+      
+        <h1>Login</h1>
+        
+        <fieldset>
+          
+          <label for="mail">Email:</label>
+          <input type="email" id="email" name="user_email">
+          
+          <label for="password">Password:</label>
+          <input type="password" id="password" name="user_password">
+          
+          
+        </fieldset>
+        
+        
+        <button type="button" id="c1" onclick="c()">Login</button>
+        <h4> New User?<a href="registration.html"> Register</a></h4>
+      </form>
+      
+    </body>
+    <script>
+
+      $(document).ready(function(){
+            $(".loader").fadeOut("slow");
+            $('#c1').click(function(){
+                $(".loader").fadeIn("slow");
+                $('.loader').css('visibility','visible');
+            });
+        });
+      
+      function c()
+      {
+        console.log('click');
+       
+        var email=document.getElementById('email').value;
+        var password=document.getElementById('password').value;
+       
+
+        $.ajax({
+                type:'post',
+                url:'login.php',
+                data:{
+                email:email,
+                password:password,
+                },
+                success:function(data)
+                {
+                    //$('#r').html(data);
+                    console.log(data);
+                    data=JSON.parse(data);
+                    var size=Object.keys(data).length;
+                    console.log(data["name"]);
+                    if(size==0)
+                     {
+                      alert('Pls register');
+                      window.location.href="registration.html";
+                     }
+                    else
+                      {
+                        localStorage.setItem('name',data["name"]);
+                        localStorage.setItem('mobile',data["mobile"]);
+                        localStorage.setItem('u_id',data["u_id"]);
+                        console.log(localStorage.getItem('name'));
+                        localStorage.getItem('mobile');
+                        console.log(localStorage.getItem('u_id'));
+                        window.location.href="main.html";
+                      }
+                }
+                //,
+                // complete: function (data)
+                //  {
+                //     window.location.href="login.html";
+                //  }
+                 }
+                );
+
+      }
+    </script>
+</html>

@@ -1,0 +1,108 @@
+ <html>
+  <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Main Page</title>
+        <!-- <link rel="stylesheet" href="css/normalize.css">
+         --><link href='https://fonts.googleapis.com/css?family=Nunito:400,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="main.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    </head>
+    <body>
+      <style type="text/css">
+              .loader
+      {   padding:0%;
+          margin:0%;
+          position: fixed;
+          left: 0px;
+          top: 0px;
+          width: 100%;
+          height: 100%;
+          z-index: 9999;
+          opacity:0.9;
+          background:url('loading3.gif') 50% 50% no-repeat rgb(0,0,0);
+          /*background-color:url('loading3.gif');*/
+      }
+      #logout
+      {
+        margin-left:80%;
+
+      }
+      </style>
+      <div class="loader"></div>
+      
+      <form method="post">
+      
+        <h1>Welcome</h1>
+        <h3>Name:  <span id="name">Aman</span></h3>
+        <h3>Mobile:  <span  id="mobile">9876512345</span></h3>
+        <button type="button" id="e" onclick="edit()">Edit Profile</button>
+        <button type="button" id="d" onclick="del()">Delete Profile</button>
+        <a id="logout" href="index.html">Logout</a>
+      </form>
+      
+    </body>
+    <script>
+      $(document).ready(function() {
+            $(".loader").fadeOut("slow");
+            $("#name").text(localStorage.getItem('name'));
+            $("#mobile").text(localStorage.getItem('mobile'));
+            $("#e").click(function(){
+              $(".loader").fadeIn("slow");
+              $(".loader").css('visibility','visible');
+            });
+
+            $("#d").click(function(){
+              $(".loader").fadeIn("slow");
+              $(".loader").css('visibility','visible');
+            });
+
+            $("#logout").click(function(){
+              localStorage.clear();
+            });
+
+          });
+      window.onbeforeunload = function() {
+          alert("You will be logged out");
+      };
+
+      function del()
+      {
+        console.log('click');
+       
+        $.ajax({
+                type:'post',
+                url:'delete.php',
+                data:{
+                u_id:localStorage.getItem('u_id')
+                },
+                success:function(data)
+                {
+                    //$('#r').html(data);
+                    console.log(data);
+                    if(data=='1')
+                     {
+//                      alert('Pls register');
+                      window.location.href="index.html";
+                     }
+                    else
+                      {
+                        alert('Error occured while deleting profile');                      
+                      }
+                }
+                //,
+                // complete: function (data)
+                //  {
+                //     window.location.href="login.html";
+                //  }
+                 }
+                );
+
+      }
+      function edit()
+      {
+        window.location.href="edit.html"
+
+      }
+    </script>
+</html>
